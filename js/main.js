@@ -2,8 +2,8 @@
   'use strict';
 
   /* ── Número de WhatsApp del despacho ──
-     TODO: reemplazar por el número real con lada (ej. 5215512345678) */
-  var WHATSAPP_NUMBER = '521XXXXXXXXXX';
+     Lic. Antonio Cesar Olvera Ferretiz — 55 1820 5296 */
+  var WHATSAPP_NUMBER = '5215518205296';
 
   /* ══════════════════════════════════
      LOADER
@@ -21,7 +21,7 @@
   var navbar = document.getElementById('navbar');
   function onScroll() {
     if (!navbar) return;
-    if (window.scrollY > 40) navbar.classList.add('scrolled');
+    if (window.scrollY > 30) navbar.classList.add('scrolled');
     else navbar.classList.remove('scrolled');
   }
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -115,53 +115,29 @@
   }
 
   /* ══════════════════════════════════
-     HERO CANVAS — floating particles
+     FAQ — accordion
   ══════════════════════════════════ */
-  var canvas = document.getElementById('hero-canvas');
-  if (canvas && canvas.getContext) {
-    var ctx = canvas.getContext('2d');
-    var particles = [];
-    var PARTICLE_COUNT = 46;
-    var w, h;
-
-    function resize() {
-      w = canvas.width = canvas.offsetWidth;
-      h = canvas.height = canvas.offsetHeight;
-    }
-    function createParticles() {
-      particles = [];
-      for (var i = 0; i < PARTICLE_COUNT; i++) {
-        particles.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          r: Math.random() * 1.6 + 0.6,
-          vy: Math.random() * 0.35 + 0.08,
-          vx: (Math.random() - 0.5) * 0.15,
-          o: Math.random() * 0.5 + 0.15
-        });
-      }
-    }
-    function draw() {
-      ctx.clearRect(0, 0, w, h);
-      particles.forEach(function (p) {
-        p.y -= p.vy;
-        p.x += p.vx;
-        if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; }
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(201, 162, 75, ' + p.o + ')';
-        ctx.fill();
+  var faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach(function (item) {
+    var btn = item.querySelector('.faq-q');
+    var ans = item.querySelector('.faq-a');
+    if (!btn || !ans) return;
+    btn.addEventListener('click', function () {
+      var isOpen = item.classList.contains('open');
+      faqItems.forEach(function (other) {
+        other.classList.remove('open');
+        var oa = other.querySelector('.faq-a');
+        var ob = other.querySelector('.faq-q');
+        if (oa) oa.style.maxHeight = null;
+        if (ob) ob.setAttribute('aria-expanded', 'false');
       });
-      requestAnimationFrame(draw);
-    }
-    resize();
-    createParticles();
-    draw();
-    window.addEventListener('resize', function () {
-      resize();
-      createParticles();
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        ans.style.maxHeight = ans.scrollHeight + 'px';
+      }
     });
-  }
+  });
 
   /* ══════════════════════════════════
      FOOTER YEAR
